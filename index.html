@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Apple Frondarina Form</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            max-width: 600px;
+            width: 100%;
+            padding: 40px;
+            position: relative;
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 28px;
+        }
+
+        .subtitle {
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 14px;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #e0e0e0;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+            width: 33.33%;
+            transition: width 0.3s ease;
+        }
+
+        .step-indicator {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #666;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .form-step {
+            display: none;
+        }
+
+        .form-step.active {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateX(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: 500;
+            font-size: 14px;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="tel"],
+        input[type="number"],
+        textarea,
+        select {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: border-color 0.3s;
+            font-family: inherit;
+        }
+
+        input:focus,
+        textarea:focus,
+        select:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .radio-group, .checkbox-group {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .radio-option, .checkbox-option {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .radio-option:hover, .checkbox-option:hover {
+            border-color: #667eea;
+            background: #f8f9ff;
+        }
+
+        .radio-option input, .checkbox-option input {
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+        }
+
+        .radio-option label, .checkbox-option label {
+            margin: 0;
+            cursor: pointer;
+            flex: 1;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+        }
+
+        button {
+            flex: 1;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-next, .btn-submit {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .btn-prev {
+            background: #f0f0f0;
+            color: #333;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .success-message {
+            display: none;
+            text-align: center;
+            padding: 40px;
+        }
+
+        .success-message.active {
+            display: block;
+        }
+
+        .success-icon {
+            font-size: 60px;
+            margin-bottom: 20px;
+        }
+
+        .setup-note {
+            background: #fff3cd;
+            border: 1px solid #ffc107;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-size: 13px;
+            color: #856404;
+        }
+
+        .setup-note strong {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                padding: 25px;
+            }
+            
+            h1 {
+                font-size: 24px;
+            }
+
+            .button-group {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div id="formContainer">
+            <h1>📝 Apple Survey Form</h1>
+            <p class="subtitle">Please answer all questions. This will only take a few minutes. Please cooperate with me.</p>
+
+            <!-- <div class="setup-note">
+                <strong>⚠️ Setup Required:</strong>
+                Replace "YOUR_FORM_ID" in the JavaScript with your Formspree form ID. Get one free at <a href="https://formspree.io" target="_blank">formspree.io</a>
+            </div> -->
+
+            <div class="step-indicator">
+                <span id="stepText">Step 1 of 4</span>
+            </div>
+
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+
+            <form id="multiStepForm">
+                <!-- Step 1: Personal Information -->
+                <div class="form-step active" data-step="1">
+                    <h2 style="margin-bottom: 20px; color: #333; font-size: 22px;">Personal Information</h2>
+                    
+                    <div class="form-group">
+                        <label for="fullName">Full Name *</label>
+                        <input type="text" id="fullName" name="fullName" required placeholder="Alejandro Tayag">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email">Email Address *</label>
+                        <input type="email" id="email" name="email" required placeholder="alejandro@example.com">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="phone">Phone Number</label>
+                        <input type="tel" id="phone" name="phone" placeholder="+63 966 869 4299">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="age">Age *</label>
+                        <input type="number" id="age" name="age" required min="1" max="120" placeholder="23">
+                    </div>
+                </div>
+
+                <!-- Step 1: Personal Information -->
+               <div class="form-step" data-step="2">
+                    <h2 style="margin-bottom: 20px; color: #333; font-size: 22px;">Your Preferences</h2>
+                    
+                    <div class="form-group">
+                        <label>Are you mad? </label>
+                        <div class="radio-group">
+                            <div class="radio-option">
+                                <input type="radio" id="madYes" name="mad" value="Yes" required>
+                                <label for="madYes">Yes</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" id="madNo" name="mad" value="No">
+                                <label for="madNo">No</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Are you happy? </label>
+                        <div class="radio-group">
+                            <div class="radio-option">
+                                <input type="radio" id="happyYes" name="happy" value="Yes" required>
+                                <label for="happyYes">Yes</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" id="happyNo" name="happy" value="No">
+                                <label for="happyNo">No</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Are you bz now? </label>
+                        <div class="radio-group">
+                            <div class="radio-option">
+                                <input type="radio" id="bzYes" name="bz" value="Yes" required>
+                                <label for="bzYes">Yes</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" id="bzNo" name="bz" value="No">
+                                <label for="bzNo">No</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 2: Preferences -->
+                <div class="form-step" data-step="3">
+                    <h2 style="margin-bottom: 20px; color: #333; font-size: 22px;">Your Preferences</h2>
+                    
+                    <div class="form-group">
+                        <label>Availability to talk (Schedule) *</label>
+                        <div class="checkbox-group">
+                            <div class="checkbox-option">
+                                <input type="checkbox" id="monday" name="availability" value="Monday">
+                                <label for="monday"> Monday</label>
+                            </div>
+                            <div class="checkbox-option">
+                                <input type="checkbox" id="tuesday" name="availability" value="Tuesday">
+                                <label for="tuesday">Tuesday</label>
+                            </div>
+                            <div class="checkbox-option">
+                                <input type="checkbox" id="wednesday" name="availability" value="Wednesday">
+                                <label for="wednesday">Wednesday</label>
+                            </div>
+                            <div class="checkbox-option">
+                                <input type="checkbox" id="thursday" name="availability" value="Thursday">
+                                <label for="thursday">Thursday</label>
+                            </div>
+                            <div class="checkbox-option">
+                                <input type="checkbox" id="friday" name="availability" value="Friday">
+                                <label for="friday">Friday</label>
+                            </div>
+                            <div class="checkbox-option">
+                                <input type="checkbox" id="saturday" name="availability" value="Saturday">
+                                <label for="saturday">Saturday</label>
+                            </div>
+                            <div class="checkbox-option">
+                                <input type="checkbox" id="sunday" name="availability" value="Sunday">
+                                <label for="sunday">Sunday</label>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- Step 3: Feedback -->
+                <div class="form-step" data-step="4">
+                    <h2 style="margin-bottom: 20px; color: #333; font-size: 22px;">Schedule</h2>
+                    
+                    <div class="form-group">
+                        <label>What time? (Select all that apply) *</label>
+                        <div class="checkbox-group">
+                            <div class="checkbox-option">
+                                <input type="checkbox" id="wholeday" name="interests" value="Wholeday">
+                                <label for="wholeday">Wholeday</label>
+                            </div>
+                            <div class="checkbox-option">
+                                <input type="checkbox" id="halfdays" name="interests" value="Halfday">
+                                <label for="halfdays">Halfday</label>
+                            </div>
+                            <div class="checkbox-option">
+                                <input type="checkbox" id="morning" name="interests" value="Morning">
+                                <label for="morning">Morning</label>
+                            </div>
+                            <div class="checkbox-option">
+                                <input type="checkbox" id="afternoon" name="interests" value="Afternoon">
+                                <label for="afternoon">Afternoon</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="comments">Explain your side *</label>
+                        <textarea id="comments" name="comments" required placeholder="Is there's a problem with us? your not talking to me that much na! are you avoiding me naba? I feel like there's different about your gesture and something you're holding back..."></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="comments2">Free message *</label>
+                        <textarea id="comments2" name="comments2" required placeholder="Anything you want to share..."></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="recommend">Would you recommend a place for the date? *</label>
+                        <select id="recommend" name="recommend" required>
+                            <option value="">Select an option...</option>
+                            <option value="Inside Clark">Inside Clark</option>
+                            <option value="SM City Clark">SM City Clark</option>
+                            <option value="Not Sure">Not Sure</option>
+                            <option value="Up to you">Up to you</option>
+                            <option value="Angeles City">Angeles City</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="button-group">
+                    <button type="button" class="btn-prev" id="prevBtn" style="display: none;">← Previous</button>
+                    <button type="button" class="btn-next" id="nextBtn">Next →</button>
+                    <button type="submit" class="btn-submit" id="submitBtn" style="display: none;">Submit</button>
+                </div>
+            </form>
+        </div>
+
+        <div class="success-message" id="successMessage">
+            <div class="success-icon">✅</div>
+            <h2 style="color: #4caf50; margin-bottom: 15px;">Thank You!</h2>
+            <p style="color: #666; font-size: 16px;">Your response has been submitted successfully. We appreciate your feedback!</p>
+        </div>
+    </div>
+
+    <script>
+        const form = document.getElementById('multiStepForm');
+        const steps = document.querySelectorAll('.form-step');
+        const nextBtn = document.getElementById('nextBtn');
+        const prevBtn = document.getElementById('prevBtn');
+        const submitBtn = document.getElementById('submitBtn');
+        const progressFill = document.getElementById('progressFill');
+        const stepText = document.getElementById('stepText');
+        const formContainer = document.getElementById('formContainer');
+        const successMessage = document.getElementById('successMessage');
+
+        let currentStep = 1;
+        const totalSteps = 4;
+
+        function updateStep() {
+            steps.forEach((step, index) => {
+                step.classList.remove('active');
+                if (index + 1 === currentStep) {
+                    step.classList.add('active');
+                }
+            });
+
+            const progress = (currentStep / totalSteps) * 100;
+            progressFill.style.width = progress + '%';
+            stepText.textContent = `Step ${currentStep} of ${totalSteps}`;
+
+            prevBtn.style.display = currentStep === 1 ? 'none' : 'block';
+            nextBtn.style.display = currentStep === totalSteps ? 'none' : 'block';
+            submitBtn.style.display = currentStep === totalSteps ? 'block' : 'none';
+        }
+
+        function validateStep(step) {
+            const currentStepElement = document.querySelector(`.form-step[data-step="${step}"]`);
+            const inputs = currentStepElement.querySelectorAll('input[required], select[required], textarea[required]');
+            
+            let isValid = true;
+            inputs.forEach(input => {
+                if (input.type === 'radio') {
+                    const radioGroup = currentStepElement.querySelectorAll(`input[name="${input.name}"]`);
+                    const isChecked = Array.from(radioGroup).some(radio => radio.checked);
+                    if (!isChecked) isValid = false;
+                } else if (input.type === 'checkbox') {
+                    const checkboxGroup = currentStepElement.querySelectorAll(`input[name="${input.name}"]`);
+                    const isChecked = Array.from(checkboxGroup).some(checkbox => checkbox.checked);
+                    if (!isChecked) isValid = false;
+                } else if (!input.value.trim()) {
+                    isValid = false;
+                }
+            });
+
+            return isValid;
+        }
+
+        nextBtn.addEventListener('click', () => {
+            if (validateStep(currentStep)) {
+                if (currentStep < totalSteps) {
+                    currentStep++;
+                    updateStep();
+                }
+            } else {
+                alert('Please fill in all required fields before proceeding.');
+            }
+        });
+
+        prevBtn.addEventListener('click', () => {
+            if (currentStep > 1) {
+                currentStep--;
+                updateStep();
+            }
+        });
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            if (!validateStep(currentStep)) {
+                alert('Please fill in all required fields.');
+                return;
+            }
+
+            const formData = new FormData(form);
+            
+            // Get all checkbox values
+            const interests = [];
+            document.querySelectorAll('input[name="interests"]:checked').forEach(cb => {
+                interests.push(cb.value);
+            });
+            formData.set('interests', interests.join(', '));
+
+            const availability = [];
+            document.querySelectorAll('input[name="availability"]:checked').forEach(cb => {
+                availability.push(cb.value);
+            });
+            formData.set('availability', availability.join(', '));
+
+            try {
+                const response = await fetch('https://formspree.io/f/myzlayel', {
+                    method: 'POST',
+                    body: formData,
+                    headers: {
+                        'Accept': 'application/json'
+                    }
+                });
+
+                if (response.ok) {
+                    formContainer.style.display = 'none';
+                    successMessage.classList.add('active');
+                } else {
+                    alert('Oops! There was a problem submitting your form. Please try again.');
+                }
+            } catch (error) {
+                alert('Oops! There was a problem submitting your form. Please try again.');
+            }
+        });
+
+        updateStep();
+    </script>
+</body>
+</html>
