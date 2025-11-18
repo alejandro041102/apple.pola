@@ -294,7 +294,7 @@
 
                 <!-- Step 1: Personal Information -->
                <div class="form-step" data-step="2">
-                    <h2 style="margin-bottom: 20px; color: #333; font-size: 22px;">Your Preferences</h2>
+                    <h2 style="margin-bottom: 20px; color: #333; font-size: 22px;">Your Mood</h2>
                     
                     <div class="form-group">
                         <label>Are you mad? </label>
@@ -306,6 +306,19 @@
                             <div class="radio-option">
                                 <input type="radio" id="madNo" name="mad" value="No">
                                 <label for="madNo">No</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Are you tired? </label>
+                        <div class="radio-group">
+                            <div class="radio-option">
+                                <input type="radio" id="tiredYes" name="tired" value="Yes" required>
+                                <label for="tiredYes">Yes</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" id="tiredNo" name="tired" value="No">
+                                <label for="tiredNo">No</label>
                             </div>
                         </div>
                     </div>
@@ -335,11 +348,28 @@
                             </div>
                         </div>
                     </div>
+                    <div class="form-group">
+                        <label>Are we ok? </label>
+                        <div class="radio-group">
+                            <div class="radio-option">
+                                <input type="radio" id="okYes" name="ok" value="Yes" required>
+                                <label for="okYes">Yes</label>
+                            </div>
+                             <div class="radio-option">
+                                <input type="radio" id="okMaybe" name="ok" value="Maybe" required>
+                                <label for="okMaybe">Maybe</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" id="okNo" name="ok" value="No">
+                                <label for="okNo">No</label>
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
                 <!-- Step 2: Preferences -->
                 <div class="form-step" data-step="3">
-                    <h2 style="margin-bottom: 20px; color: #333; font-size: 22px;">Your Preferences</h2>
+                    <h2 style="margin-bottom: 20px; color: #333; font-size: 22px;">Your Schedule</h2>
                     
                     <div class="form-group">
                         <label>Availability to talk (Schedule) *</label>
@@ -412,9 +442,13 @@
                         <label for="comments2">Free message *</label>
                         <textarea id="comments2" name="comments2" required placeholder="Anything you want to share..."></textarea>
                     </div>
+                    <div class="form-group">
+                        <label for="comments3">What do you feel right now? *</label>
+                        <textarea id="comments3" name="comments3" required placeholder="Feelings..."></textarea>
+                    </div>
 
                     <div class="form-group">
-                        <label for="recommend">Would you recommend a place for the date? *</label>
+                        <label for="recommend">Would you recommend a place? *</label>
                         <select id="recommend" name="recommend" required>
                             <option value="">Select an option...</option>
                             <option value="Inside Clark">Inside Clark</option>
